@@ -26,7 +26,6 @@ class ClientHandler implements Runnable {
 
     @Override
     public void run() {
-        String message;
 
         try {
             clientName = in.readLine(); // Solicita un nombre de usuario a un cliente
@@ -37,6 +36,12 @@ class ClientHandler implements Runnable {
             clientes.addPerson(clientName, out); // Añade al cliente al chatters con su canal de salida out
             clientes.sendMessageToAll(clientName + " se ha unido al chat."); // Notifica a los demás usuarios que hay un nuevo miembro en el chat
             out.println("Nombre aceptado"); // Notifica al cliente que fue aceptado
+
+            String message;
+            while ((message = in.readLine()) != null) {
+                clientes.sendMessageToAll(clientName + ": " + message);
+            }
+            
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

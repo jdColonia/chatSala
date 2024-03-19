@@ -16,20 +16,7 @@ public class Client {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            String username;
-            boolean accepted = false;
-            while (!accepted){
-                System.out.print("Ingrese su nombre de usuario: ");
-                username = userInput.readLine();
-                out.println(username); // Enviar nombre de usuario al servidor
-                String response = in.readLine(); // Recibir respuesta del servidor
-                if ("ACCEPTED".equalsIgnoreCase(response)) {
-                    System.out.println("Nombre de usuario aceptado.");
-                    accepted = true;
-                } else {
-                    System.out.println("Nombre de usuario ya está en uso. Por favor, elija otro.");
-                }
-            }
+            
             
 
             //usando el socket, crear los canales de entrada in y salida out
@@ -37,7 +24,13 @@ public class Client {
             //solicitar al usuario un alias, o nombre y enviarlo al servidor
             //no debe salir de este bloque hasta que el nombre no sea aceptado
             //al ser aceptado notificar, de lo contrario seguir pidiendo un alias
-
+            
+            System.out.print("Ingrese su nombre de usuario: ");
+            String username = userInput.readLine();
+            out.println(username);
+            
+            String response = in.readLine();
+            System.out.println(response);
 
                  
             //creamos el objeto Lector e iniciamos el hilo que nos permitira estar atentos a los mensajes
@@ -58,11 +51,13 @@ public class Client {
 
             //estar atento a la entrada del usuario para poner los mensajes en el canal de salida out
             String userInputMessage;
+
             while ((userInputMessage = userInput.readLine()) != null) {
                 out.println(userInputMessage);
+                out.flush();
             }
 
-            socket.close();
+            //socket.close();
 
 
         } catch (IOException e) {
