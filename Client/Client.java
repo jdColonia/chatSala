@@ -45,9 +45,9 @@ public class Client {
             //inicar el hilo
             Thread readerThread = new Thread(() -> {
                 try {
-                    String message;
-                    while ((message = in.readLine()) != null) {
-                        System.out.println(message);
+                    String msg;
+                    while ((msg = in.readLine()) != null) {
+                        System.out.println(msg);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Scanner;
 
+
 public class Server {
 
      public static void main(String[] args) {
@@ -19,7 +20,10 @@ public class Server {
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Nuevo cliente conectado: " + clientSocket);
-                
+                //clientes.addPerson();
+
+                ClientHandler t = new ClientHandler(clientSocket, clientes);
+                t.run();
                 //crea el objeto para gestionar al cliente y le envia la informacion necesaria
                 //inicia el hilo para ese cliente
                 
