@@ -22,8 +22,9 @@ public class Server {
                 System.out.println("Nuevo cliente conectado: " + clientSocket);
                 //clientes.addPerson();
 
-                ClientHandler t = new ClientHandler(clientSocket, clientes);
-                t.run();
+                ClientHandler clientHandler = new ClientHandler(clientSocket, clientes);
+                Thread clientThread = new Thread(clientHandler);
+                clientThread.start();
                 //crea el objeto para gestionar al cliente y le envia la informacion necesaria
                 //inicia el hilo para ese cliente
                 
