@@ -13,7 +13,25 @@ public class Client {
             String message;
             //canal de entrada para el usuario
             BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in)); 
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            String username;
+            boolean accepted = false;
+            while (!accepted){
+                System.out.print("Ingrese su nombre de usuario: ");
+                username = userInput.readLine();
+                out.println(username); // Enviar nombre de usuario al servidor
+                String response = in.readLine(); // Recibir respuesta del servidor
+                if ("ACCEPTED".equalsIgnoreCase(response)) {
+                    System.out.println("Nombre de usuario aceptado.");
+                    accepted = true;
+                } else {
+                    System.out.println("Nombre de usuario ya está en uso. Por favor, elija otro.");
+                }
+            }
             
+
             //usando el socket, crear los canales de entrada in y salida out
                       
             //solicitar al usuario un alias, o nombre y enviarlo al servidor
@@ -25,10 +43,27 @@ public class Client {
             //creamos el objeto Lector e iniciamos el hilo que nos permitira estar atentos a los mensajes
             //que llegan del servidor
             //inicar el hilo
+            Thread readerThread = new Thread(() -> {
+                try {
+                    String message;
+                    while ((message = in.readLine()) != null) {
+                        System.out.println(message);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            readerThread.start();
 
 
             //estar atento a la entrada del usuario para poner los mensajes en el canal de salida out
-            
+            String userInputMessage;
+            while ((userInputMessage = userInput.readLine()) != null) {
+                out.println(userInputMessage);
+            }
+
+            socket.close();
+
 
         } catch (IOException e) {
             e.printStackTrace();
